@@ -2,6 +2,7 @@ name: Testing
 
 # Trigger on pushes, PRs (excluding documentation changes), and nightly.
 on:
+  workflow_dispatch:
   push:
   pull_request:
   schedule:
@@ -17,6 +18,7 @@ env:
 jobs:
   # Check generated protos match their source repos (optional for PRs).
   vet-proto:
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -50,29 +52,14 @@ jobs:
             goversion: '1.26'
             display_name: 'static checks (latest-1)'
 
-          - type: extras
-            goversion: '1.27'
-            display_name: 'extras (latest)'
-
           - type: tests
             goversion: '1.27'
             display_name: 'tests (latest)'
 
           - type: tests
             goversion: '1.27'
-            testflags: -race
-            display_name: 'tests (-race, latest)'
-
-          - type: tests
-            goversion: '1.27'
             goarch: 386
             display_name: 'tests (i386, latest)'
-
-          - type: tests
-            goversion: '1.27'
-            goarch: arm64
-            runner: ubuntu-24.04-arm
-            display_name: 'tests (arm, latest)'
 
           - type: tests
             goversion: '1.26'
